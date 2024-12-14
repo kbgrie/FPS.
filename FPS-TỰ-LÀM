@@ -1,0 +1,34 @@
+local RunService = game:GetService("RunService")
+
+local lastTime = tick()
+local frameCount = 0
+local fps = 0
+
+-- Hiển thị FPS trong một GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local textLabel = Instance.new("TextLabel")
+textLabel.Size = UDim2.new(0, 400, 0, 100)  -- Kích thước lớn hơn
+textLabel.Position = UDim2.new(0.5, -200, 0.5, -50)  -- Căn giữa màn hình
+textLabel.BackgroundTransparency = 1
+textLabel.TextSize = 50  -- Tăng kích thước chữ
+textLabel.Text = "FPS: 0"
+textLabel.TextColor3 = Color3.fromRGB(255, 0, 0)  -- Màu đỏ
+textLabel.Parent = screenGui
+
+-- Cập nhật FPS mỗi frame
+RunService.RenderStepped:Connect(function()
+    frameCount = frameCount + 1
+    local currentTime = tick()
+    
+    -- Mỗi 1 giây, tính lại FPS
+    if currentTime - lastTime >= 1 then
+        fps = frameCount
+        lastTime = currentTime
+        frameCount = 0
+        
+        -- Cập nhật số FPS
+        textLabel.Text = "FPS: " .. fps
+    end
+end)
